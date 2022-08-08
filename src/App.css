@@ -1,38 +1,54 @@
-.App {
-  text-align: center;
+* {
+  margin: 0;
+  padding: 0;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.list-style-none {
+  list-style: none;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.bg-violate {
+  background-color: #292961;
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.mi-logo {
+  height: 28px;
 }
-
-.App-link {
-  color: #61dafb;
+.bg-light-violate {
+  background-color: #4b4b7e;
 }
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.bg-light-gray{
+  background-color: #fafafa;
+}
+.br-3 {
+  border-radius: 3px;
+}
+.f-11{
+  font-size: 11px;
+}
+.f-12{
+  font-size: 12px;
+}
+.f-14 {
+  font-size: 14px;
+}
+.text-light-blue {
+  color: rgba(209, 209, 240, 0.8);
+}
+.search_input::-webkit-input-placeholder {
+  color: rgba(209, 209, 240, 0.8);
+  font-size: 14px;
+}
+.outline-none{
+  outline: none;
+}
+.wi-33{
+  width: 28%;
+}
+.h-500{
+  height: 520px;
+}
+.overflow-auto{
+  overflow: auto;
+}
+.gap-15{
+  gap: 15px;
 }
