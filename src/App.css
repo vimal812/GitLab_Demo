@@ -15,16 +15,16 @@
 .bg-light-violate {
   background-color: #4b4b7e;
 }
-.bg-light-gray{
+.bg-light-gray {
   background-color: #fafafa;
 }
 .br-3 {
   border-radius: 3px;
 }
-.f-11{
+.f-11 {
   font-size: 11px;
 }
-.f-12{
+.f-12 {
   font-size: 12px;
 }
 .f-14 {
@@ -37,18 +37,45 @@
   color: rgba(209, 209, 240, 0.8);
   font-size: 14px;
 }
-.outline-none{
+.outline-none {
   outline: none;
 }
-.wi-33{
+.wi-33 {
   width: 28%;
 }
-.h-500{
+.h-500 {
   height: 520px;
 }
-.overflow-auto{
+.overflow-auto {
   overflow: auto;
 }
-.gap-15{
+.gap-15 {
   gap: 15px;
 }
+.cursor-grab {
+  cursor: grab;
+}
+.card_animation {
+  transform: translate3d(0px, 0px, 0px);
+  transition: transform 500ms ease 0s;
+}
+
+
+
+/* Dark Mode */
+.bg-dark-nav{
+  background-color:#101028;
+}
+.bg-dark-nav-search{
+  background-color: #283142;
+}
+.bg-dark-common{
+  background-color: #101028db;
+}
+.bg-dark-card{
+  background-color: #0000ff14;
+}
+.bg-dark-btn{
+background-color: #2a528e;
+}
+/*  */
