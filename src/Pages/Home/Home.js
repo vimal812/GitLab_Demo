@@ -2,146 +2,126 @@ import React from "react";
 import CardList from "../../component/CardList/CardList";
 import Navbar from "../../component/Navbar/Navbar";
 import "./Home.css";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ThemeContext } from "../../ThemeContext/ThemeContext";
+import DropWrapper from "../../component/DropWrapper/DropWrapper";
+import Card from "../../component/Card/Card";
 
 const Home = () => {
   const CARD1 = [
     {
       id: 1,
-      name: "Pranav Pandya",
+      firstname: "Pranav",
+      lastname: "Pandya",
       branch: 21,
       month: "July - 2022",
+      icon: "⭕️",
+      status: "Open",
     },
     {
       id: 2,
-      name: "Ravi Rana",
+      firstname: "Ravi",
+      lastname: "Rana",
       branch: 354,
       month: "July - 2022",
+      icon: "⭕️",
+      status: "Open",
     },
     {
       id: 3,
-      name: "Keval Chavda",
+      firstname: "Keval",
+      lastname: "Chavda",
       branch: 87,
       month: "August - 2022",
+      icon: "⭕️",
+      status: "Open",
     },
     {
       id: 4,
-      name: "Jay Soni",
+      firstname: "Jay",
+      lastname: "Soni",
       branch: 96,
       month: "August - 2022",
+      icon: "⭕️",
+      status: "Open",
     },
     {
       id: 5,
-      name: "Jaydeep Barad",
+      firstname: "Jaydeep",
+      lastname: "Barad",
       branch: 75,
       month: "July - 2022",
+      icon: "⭕️",
+      status: "Open",
     },
     {
       id: 6,
-      name: "Smit Panchal",
+      firstname: "Smit",
+      lastname: "Panchal",
       branch: 43,
       month: "August - 2022",
+      icon: "⭕️",
+      status: "Open",
     },
     {
       id: 7,
-      name: "Rohit Oza",
+      firstname: "Rohit",
+      lastname: "Oza",
       branch: 71,
       month: "June - 2022",
+      icon: "⭕️",
+      status: "Open",
     },
   ];
 
-  const CARD2 = [
+  const [items, setItems] = useState(CARD1);
+
+  const statuses = [
     {
-      id: 8,
-      name: "Pranav Pandya",
-      branch: 21,
-      month: "July - 2022",
+      status: "Open",
+      icon: "⭕️",
+      color: "#EB5A46",
     },
     {
-      id: 9,
-      name: "Ravi Rana",
-      branch: 354,
-      month: "July - 2022",
+      status: "In Progress",
+      icon: "🔆️",
+      color: "#00C2E0",
     },
     {
-      id: 10,
-      name: "Keval Chavda",
-      branch: 87,
-      month: "August - 2022",
+      status: "In Review",
+      icon: "📝",
+      color: "#C377E0",
     },
     {
-      id: 11,
-      name: "Jay Soni",
-      branch: 96,
-      month: "August - 2022",
-    },
-    {
-      id: 12,
-      name: "Jaydeep Barad",
-      branch: 75,
-      month: "July - 2022",
-    },
-    {
-      id: 13,
-      name: "Smit Panchal",
-      branch: 43,
-      month: "August - 2022",
-    },
-    {
-      id: 14,
-      name: "Rohit Oza",
-      branch: 71,
-      month: "June - 2022",
-    },
-  ];
-  const CARD3 = [
-    {
-      id: 15,
-      name: "Pranav Pandya",
-      branch: 21,
-      month: "July - 2022",
-    },
-    {
-      id: 16,
-      name: "Ravi Rana",
-      branch: 354,
-      month: "July - 2022",
-    },
-    {
-      id: 17,
-      name: "Keval Chavda",
-      branch: 87,
-      month: "August - 2022",
-    },
-    {
-      id: 18,
-      name: "Jay Soni",
-      branch: 96,
-      month: "August - 2022",
-    },
-    {
-      id: 19,
-      name: "Jaydeep Barad",
-      branch: 75,
-      month: "July - 2022",
-    },
-    {
-      id: 20,
-      name: "Smit Panchal",
-      branch: 43,
-      month: "August - 2022",
-    },
-    {
-      id: 21,
-      name: "Rohit Oza",
-      branch: 71,
-      month: "June - 2022",
+      status: "Done",
+      icon: "✅",
+      color: "#3981DE",
     },
   ];
 
   const theme = useContext(ThemeContext);
   const darkMode = theme.state.darkMode;
+
+  const onDrop = (item, monitor, status) => {
+    if (item.status !== status) { 
+      const mapping = statuses.find((si) => si.status === status);
+      setItems((prevState) => {
+        const newItems = prevState
+          .filter((i) => i?.id !== item?.id)
+          .concat({ ...item, status, icon: mapping.icon });
+        return [...newItems];
+      });
+    }
+  };
+  const moveItem = (dragIndex, hoverIndex) => {
+    const item = items[dragIndex];
+    setItems((prevState) => {
+      const newItems = prevState.filter((i, idx) => idx !== dragIndex);
+      newItems.splice(hoverIndex, 0, item);
+      return [...newItems];
+    });
+  };
+
   return (
     <div className={`${darkMode ? "bg-dark-nav-search" : ""}`}>
       <Navbar />
@@ -152,14 +132,24 @@ const Home = () => {
       >
         <input
           type="text"
-          className={` p-1 px-2 outline-none w-50 ${darkMode ? "rounded  bg-dark-nav-search border-0 text-white" :""} `}
+          className={` p-1 px-2 outline-none w-50 ${
+            darkMode ? "rounded  bg-dark-nav-search border-0 text-white" : ""
+          } `}
           placeholder="Search or filter result..."
         />
         <div>
-          <button className={`p-1 px-2 border border-secondary br-3 me-3 ${darkMode ? "bg-secondary text-white" :""} `}>
+          <button
+            className={`p-1 px-2 border border-secondary br-3 me-3 ${
+              darkMode ? "bg-secondary text-white" : ""
+            } `}
+          >
             Edit board
           </button>
-          <button className={`p-1 px-2 border border-secondary br-3 ${darkMode ? "bg-dark-btn " : "bg-primary"}  text-light`}>
+          <button
+            className={`p-1 px-2 border border-secondary br-3 ${
+              darkMode ? "bg-dark-btn " : "bg-primary"
+            }  text-light`}
+          >
             Create list
           </button>
         </div>
@@ -169,9 +159,27 @@ const Home = () => {
           darkMode ? "" : "border"
         } d-flex gap-15 justify-content-center`}
       >
-        <CardList ITEMS={CARD1} />
-        <CardList ITEMS={CARD2} />
-        <CardList ITEMS={CARD3} />
+        {statuses?.map((s) => {
+          return (
+            <div className={"col-wrapper"}>
+              <DropWrapper onDrop={onDrop} status={s?.status}>
+                <CardList title={s.status} icon={s.icon} setItems={setItems} items={items}>
+                  {items
+                    .filter((i) => i?.status === s?.status)
+                    .map((i, idx) => (
+                      <Card
+                        key={i?.id}
+                        item={i}
+                        index={idx}
+                        moveItem={moveItem}
+                        status={s}
+                      />
+                    ))}
+                </CardList>
+              </DropWrapper>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

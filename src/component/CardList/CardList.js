@@ -1,85 +1,84 @@
-import React from "react";
-import Card from "../Card/Card";
-import update from "immutability-helper";
-import { memo, useCallback, useState } from "react";
-import { useDrop } from "react-dnd";
-import { ItemTypes } from "../../DnDContainer/ItemTypes";
+import React, { useState } from "react";
 import { useContext } from "react";
 import { ThemeContext } from "../../ThemeContext/ThemeContext";
+import AddCard from "../AddCard/AddCard";
 
 const CardList = (props) => {
+  const { children, title, setItems, items, icon } = props;
   const theme = useContext(ThemeContext);
   const darkMode = theme.state.darkMode;
+  const [addCard, setAddCard] = useState(false);
 
-  const { ITEMS } = props;
-  const [cards, setCards] = useState(ITEMS);
-  const findCard = useCallback(
-    (id) => {
-      const card = cards.filter((c) => `${c.id}` === id)[0];
-      return {
-        card,
-        index: cards.indexOf(card),
-      };
-    },
-    [cards]
-  );
+  const [name, setName] = useState({
+    firstname: "",
+    lastname: "",
+  });
 
-  const moveCard = useCallback(
-    (id, atIndex) => {
-      const { card, index } = findCard(id);
-      setCards(
-        update(cards, {
-          $splice: [
-            [index, 1],
-            [atIndex, 0, card],
-          ],
-        })
-      );
-    },
-    [findCard, cards, setCards]
-  );
-  const [, drop] = useDrop(() => ({ accept: ItemTypes.CARD }));
+  const handleAddCard = () => {
+    const tmpArr = [...items];
+    tmpArr.push({
+      id: items.length + 1,
+      firstname: name.firstname,
+      lastname: name.lastname,
+      branch: Math.floor(Math.random() * 99) + 10,
+      month: "August - 2022",
+      status: title,
+      icon: icon,
+    });
+    setAddCard(false);
+    setItems(tmpArr);
+    setName({
+      firstname: "",
+      lastname: "",
+    });
+  };
+  
 
   return (
     <div
-      className={` ${
+      className={` my-5 ${
         darkMode ? "bg-dark-common text-light" : "bg-light-gray"
-      }  wi-33 border rounded`}
+      }  border rounded`}
     >
       <div className="d-flex justify-content-between align-items-center py-2">
-        <h5 className="fs-6 ms-3">
+        <h5 className="fs-6 ms-3 mb-0">
           <span className="f-12 fw-bolder me-3">
             <i class="fa-solid fa-angle-right"></i>
           </span>{" "}
-          Open
+          {title}
         </h5>
         <div className="me-3 d-flex align-items-center">
           <button className="text-secondary border-0 fs-5 me-2 bg-transparent">
             <i className="fa-solid fa-box-tissue"></i>
           </button>
-          <p className="mb-0 me-2 text-secondary">7</p>
+          <p className="mb-0 me-2 text-secondary">{children.length}</p>
           <button
             className={`border ${
               darkMode ? "bg-secondary text-white" : "bg-white"
             }  text-secondary p-1 px-2 rounded`}
+            onClick={() => {
+              setAddCard(true);
+            }}
           >
             <i class="fa-solid fa-plus"></i>
           </button>
         </div>
       </div>
+
       <hr className="my-1" />
-      <div className="h-500 overflow-auto" ref={drop}>
-        {cards.map((card) => (
-          <Card
-            key={card.id}
-            id={`${card.id}`}
-            name={card.name}
-            month={card.month}
-            branch={card.branch}
-            moveCard={moveCard}
-            findCard={findCard}
+
+      <div className="wi-33">
+        {addCard ? (
+          <AddCard
+            name={name}
+            setName={setName}
+            setAddCard={setAddCard}
+            handleAddCard={handleAddCard}
           />
-        ))}
+        ) : (
+          ""
+        )}
+        {children}
       </div>
     </div>
   );

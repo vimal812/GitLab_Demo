@@ -41,7 +41,12 @@
   outline: none;
 }
 .wi-33 {
-  width: 28%;
+  width: 350px;
+  height: 650px;
+  overflow: scroll;
+}
+.w-160{
+  width: 150px;
 }
 .h-500 {
   height: 520px;
@@ -59,7 +64,14 @@
   transform: translate3d(0px, 0px, 0px);
   transition: transform 500ms ease 0s;
 }
-
+.profile-circle{
+  height: 25px;
+  width: 25px;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 
 /* Dark Mode */

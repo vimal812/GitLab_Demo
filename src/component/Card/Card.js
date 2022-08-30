@@ -1,61 +1,74 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import { ItemTypes } from "../../DnDContainer/ItemTypes";
 import { useContext } from "react";
 import { ThemeContext } from "../../ThemeContext/ThemeContext";
 
 const Card = (props) => {
-  const { name, branch, id, findCard, moveCard, month } = props;
+  const { item, index, moveItem } = props;
 
   const theme = useContext(ThemeContext);
   const darkMode = theme.state.darkMode;
+  const ref = useRef(null);
 
-  const originalIndex = findCard(id).index;
+  const [, drop] = useDrop({
+    accept: ItemTypes.CARD,
+    hover(item, monitor) {
+      if (!ref.current) {
+        return;
+      }
+      const dragIndex = item.index;
+      const hoverIndex = index;
 
-  const [{ isDragging }, drag] = useDrag(
-    () => ({
-      type: ItemTypes.CARD,
-      item: { id, originalIndex },
-      collect: (monitor) => ({
-        isDragging: monitor.isDragging(),
-      }),
-      end: (item, monitor) => {
-        const { id: droppedId, originalIndex } = item;
-        const didDrop = monitor.didDrop();
-        if (!didDrop) {
-          moveCard(droppedId, originalIndex);
-        }
-      },
+      if (dragIndex === hoverIndex) {
+        return;
+      }
+      const hoveredRect = ref.current.getBoundingClientRect();
+      const hoverMiddleY = (hoveredRect.bottom - hoveredRect.top) / 2;
+      const mousePosition = monitor.getClientOffset();
+      const hoverClientY = mousePosition.y - hoveredRect.top;
+
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+        return;
+      }
+
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+        return;
+      }
+      moveItem(dragIndex, hoverIndex);
+      item.index = hoverIndex;
+    },
+  });
+
+  const [{ isDragging }, drag] = useDrag({
+    item: { ...item, index },
+    type: ItemTypes.CARD,
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
     }),
-    [id, originalIndex, moveCard]
-  );
-  const [, drop] = useDrop(
-    () => ({
-      accept: ItemTypes.CARD,
-      hover({ id: draggedId }) {
-        if (draggedId !== id) {
-          const { index: overIndex } = findCard(id);
-          moveCard(draggedId, overIndex);
-        }
-      },
-    }),
-    [findCard, moveCard]
-  );
-  const opacity = isDragging ? 0 : 1;
+  });
+
+  drag(drop(ref));
+
   return (
     <div
-      ref={(node) => drag(drop(node))}
-      style={{ opacity }}
+      ref={ref}
+      style={{ opacity: isDragging ? 0 : 1 }}
       className={`border m-1 rounded p-3 cursor-grab ${
         isDragging ? "card_animation" : ""
       }  ${darkMode ? "bg-dark-nav-search" : "bg-white"} `}
     >
       <h6>
-        {name} - {month}{" "}
+        {item.firstname + " " + item.lastname} - {item.month}{" "}
       </h6>
       <div className="d-flex justify-content-between">
-        <p className=" mb-0 text-secondary f-12">#{branch}</p>
-        <div className="rounded-circle bg-dark p-1 f-12 text-white">PP</div>
+        <div className="d-flex">
+          <p className=" mb-0 text-secondary f-12 me-2">#{item.branch}</p>
+          <p className=" mb-0 text-secondary f-12">{item.icon}</p>
+        </div>
+        <div className="rounded-circle bg-dark profile-circle text-white">
+          {item.firstname[0] + item.lastname[0]}
+        </div>
       </div>
     </div>
   );
