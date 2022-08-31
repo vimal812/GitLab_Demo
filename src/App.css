@@ -43,10 +43,13 @@
 .wi-33 {
   width: 350px;
   height: 650px;
-  overflow: scroll;
+  overflow: auto;
 }
 .w-160{
   width: 150px;
+}
+.w-220{
+  width: 210px;
 }
 .h-500 {
   height: 520px;
